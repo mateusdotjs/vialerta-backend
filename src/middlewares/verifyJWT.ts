@@ -9,12 +9,16 @@ async function verifyJWT(req: Request, res: Response, next: NextFunction) {
   }
 
   const isValid = jwt.verify(accessToken, process.env.JWT_SECRET as string);
+  console.log(isValid);
 
   if (!isValid) {
     res.cookie("accessToken", "", {
       httpOnly: true,
       maxAge: 0,
+      sameSite: "lax",
+      secure: true,
     });
+
     return res.json({ auth: false });
   }
 
