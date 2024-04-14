@@ -1,3 +1,3 @@
 # Vialerta
 
-Back-end do projeto Vialerta feito Node, Express e TypeScript
+Back-end do projeto Vialerta feito Node, Express, Prisma e TypeScript
