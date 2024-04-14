@@ -15,7 +15,7 @@ async function verifyJWT(req: Request, res: Response, next: NextFunction) {
     res.cookie("accessToken", "", {
       httpOnly: true,
       maxAge: 0,
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
     });
 
