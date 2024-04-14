@@ -2,12 +2,13 @@ import express, { Request, Response } from "express";
 import prisma from "../../../prisma/client";
 import bcrypt from "bcrypt";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { signJWT } from "./signJWT";
 
 const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
   const { email, password, name } = req.body;
-  console.log("oi");
+
   if (!email || !password || !name || password.length < 6) {
     return res
       .status(400)
@@ -25,7 +26,11 @@ router.post("/", async (req: Request, res: Response) => {
       },
     });
 
-    return res.status(200).json({ message: "Registrado com sucesso!" });
+    signJWT(res, user);
+
+    return res
+      .status(200)
+      .json({ auth: true, userId: user.id, userName: user.name });
   } catch (error) {
     if (
       error instanceof PrismaClientKnownRequestError &&
