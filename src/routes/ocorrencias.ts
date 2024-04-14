@@ -74,7 +74,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const { type, authorId } = req.body;
-  
+
   if (!type || !authorId || !validateType(type)) {
     return res.status(401).json({ error: "Requisição incorreta" });
   }
@@ -90,11 +90,8 @@ router.post("/:id", async (req: Request, res: Response) => {
 
     res.status(200).json({ ocorrencia });
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Erro interno do servidor." });
-    }
+    console.log(error);
+    res.status(400).json({ error: "Erro ao enviar ocorrência." });
   }
 });
 
