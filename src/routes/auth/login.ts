@@ -10,7 +10,7 @@ router.post("/", async (req: Request, res: Response) => {
   console.log(req.cookies);
 
   if (!email || !password) {
-    return res.json({ error: "Preencha todos os campos" });
+    return res.status(400).json({ error: "Preencha todos os campos." });
   }
 
   try {
@@ -21,13 +21,13 @@ router.post("/", async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      throw new Error("Usuário ou senha incorretos");
+      return res.status(401).json({ error: "Usuário ou senha incorretos." });
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      throw new Error("Usuário ou senha incorretos");
+      return res.status(401).json({ error: "Usuário ou senha incorretos." });
     }
 
     const payload = {
@@ -51,11 +51,12 @@ router.post("/", async (req: Request, res: Response) => {
 
     return res
       .status(200)
-      .json({ auth: true, userId: user.id, userName: user.name })
-      .send();
+      .json({ auth: true, userId: user.id, userName: user.name });
   } catch (error) {
-    res.status(401);
-    if (error instanceof Error) return res.json({ error: error.message });
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "Erro ao fazer login, tente novamente." });
   }
 });
 
