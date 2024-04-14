@@ -7,6 +7,8 @@ router.post("/", async (req: Request, res: Response) => {
   res.cookie("accessToken", "", {
     httpOnly: true,
     maxAge: 0,
+    sameSite: "none",
+    secure: true,
   });
   return res.json({ auth: false });
 });
